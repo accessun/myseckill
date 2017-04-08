@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context" xmlns:mvc="http://www.springframework.org/schema/mvc"
+  xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+  <!--
+  Ref: http://stackoverflow.com/questions/8162459/what-does-mvcannotation-driven-do
+  1. 自动注册
+    1.1 RequestMappingHandlerMapping
+    1.2 RequestMappingHandlerAdapter
+    1.3 ExceptionHandlerExceptionResolver
+  2. 提供一系列功能
+    2.1 数据绑定
+    2.2 数字和日期自动转换 (ConversionServiceExposingInterceptor)
+        @NumberFormat, @DateTimeFormat
+        xml, json默认读写支持
+  -->
+  <mvc:annotation-driven />
+  
+  <!-- 
+  1. 加入对静态资源的处理
+  2. 允许使用"/"做整体映射
+  -->
+  <!-- Configures a handler for serving static resources by forwarding to the Servlet container's default Servlet. Use of 
+    this handler allows using a "/" mapping with the DispatcherServlet while still utilizing the Servlet container to serve static 
+    resources. This handler will forward all requests to the default Servlet. Therefore it is important that it remains last 
+    in the order of all other URL HandlerMappings. That will be the case if you use the "annotation-driven" element or alternatively 
+    if you are setting up your customized HandlerMapping instance be sure to set its "order" property to a value lower than that 
+    of the DefaultServletHttpRequestHandler, which is Integer.MAX_VALUE. -->
+  <mvc:default-servlet-handler />
+
+  <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="prefix" value="/WEB-INF/jsp/"></property>
+    <property name="suffix" value=".jsp"></property>
+  </bean>
+  
+  <context:component-scan base-package="org.seckill.web"></context:component-scan>
+
+</beans>
