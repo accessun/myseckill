@@ -83,4 +83,10 @@ public class Exposer {
         this.endTime = endTime;
     }
 
+    @Override
+    public String toString() {
+        return "Exposer [exposed=" + exposed + ", md5=" + md5 + ", seckillId=" + seckillId + ", currentTime="
+                + currentTime + ", startTime=" + startTime + ", endTime=" + endTime + "]";
+    }
+
 }
