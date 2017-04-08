@@ -1,0 +1,18 @@
+package org.seckill.exception;
+
+/**
+ * 重复秒杀(下单)异常, 本质上应该是运行时异常
+ */
+public class RepeatKillException extends SeckillException {
+
+    private static final long serialVersionUID = 1L;
+
+    public RepeatKillException(String message) {
+        super(message);
+    }
+
+    public RepeatKillException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+}
