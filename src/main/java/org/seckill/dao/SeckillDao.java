@@ -3,6 +3,7 @@ package org.seckill.dao;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.seckill.entity.Seckill;
 
 public interface SeckillDao {
@@ -16,7 +17,7 @@ public interface SeckillDao {
      *            下单时间
      * @return 如果影响行数>1, 表示更新记录的行数
      */
-    int reduceNumber(long seckillId, Date killTime);
+    int reduceNumber(@Param("seckillId") long seckillId, @Param("killTime") Date killTime);
 
     /**
      * 根据ID查询秒杀商品
@@ -34,6 +35,6 @@ public interface SeckillDao {
      * @param limit
      * @return
      */
-    List<Seckill> queryAll(int offset, int limit);
+    List<Seckill> queryAll(@Param("offset") int offset, @Param("limit") int limit);
 
 }

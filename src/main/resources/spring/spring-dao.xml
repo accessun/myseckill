@@ -7,10 +7,10 @@
   <context:property-placeholder location="classpath:jdbc.properties" />
   
   <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-    <property name="driverClass" value="${driver}"></property>
-    <property name="jdbcUrl" value="${url}"></property>
-    <property name="user" value="${username}"></property>
-    <property name="password" value="${password}"></property>
+    <property name="driverClass" value="${jdbc.driver}"></property>
+    <property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>
+    <property name="user" value="${jdbc.username}"></property>
+    <property name="password" value="${jdbc.password}"></property>
     
     <property name="maxPoolSize" value="30"></property>
     <property name="minPoolSize" value="10"></property>
