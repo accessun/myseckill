@@ -22,8 +22,9 @@ public class Exposer {
         this.seckillId = seckillId;
     }
 
-    public Exposer(boolean exposed, long currentTime, long startTime, long endTime) {
+    public Exposer(boolean exposed, long seckillId, long currentTime, long startTime, long endTime) {
         this.exposed = exposed;
+        this.seckillId = seckillId;
         this.currentTime = currentTime;
         this.startTime = startTime;
         this.endTime = endTime;
