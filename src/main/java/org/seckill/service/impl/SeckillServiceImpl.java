@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.seckill.dao.SeckillDao;
 import org.seckill.dao.SuccessKilledDao;
+import org.seckill.dao.cache.RedisDao;
 import org.seckill.dto.Exposer;
 import org.seckill.dto.SeckillExecution;
 import org.seckill.entity.Seckill;
@@ -31,6 +32,9 @@ public class SeckillServiceImpl implements SeckillService {
     private SeckillDao seckillDao;
 
     @Autowired
+    private RedisDao redisDao;
+
+    @Autowired
     private SuccessKilledDao successKilledDao;
 
     @Override
@@ -45,9 +49,15 @@ public class SeckillServiceImpl implements SeckillService {
 
     @Override
     public Exposer exposeSeckillUrl(long seckillId) {
-        Seckill seckill = seckillDao.queryById(seckillId);
-        if (seckill == null)
-            return new Exposer(false, seckillId);
+        // 优化点:缓存优化:超时的基础上维护一致性
+        Seckill seckill = redisDao.getSeckill(seckillId);
+        if (seckill == null) {
+            seckill = seckillDao.queryById(seckillId);
+            if (seckill == null)
+                return new Exposer(false, seckillId);
+            else
+                redisDao.putSeckill(seckill);
+        }
 
         long startTime = seckill.getStartTime().getTime();
         long endTime = seckill.getEndTime().getTime();

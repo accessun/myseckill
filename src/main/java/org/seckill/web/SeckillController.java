@@ -87,6 +87,11 @@ public class SeckillController {
         }
     }
 
+    /*-
+     * 单独做一个AJAX请求获取系统时间的原因:
+     * detail页为了应对高并发减轻系统压力会作为静态资源放到CDN(Content Delivery Network)上,
+     * 这时获取系统时间只能单独拿出来, 做成这样的AJAX请求
+     */
     @RequestMapping(value = "/time/now", method = RequestMethod.GET)
     @ResponseBody
     public SeckillResult<Long> getTime() {
