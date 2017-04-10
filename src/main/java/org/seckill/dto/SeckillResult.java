@@ -1,7 +1,7 @@
 package org.seckill.dto;
 
 /*
- * 用于封装JSON结果返回给前端
+ * 用于封装JSON结果返回给前端, 使用泛型以便作为通用封装类
  */
 public class SeckillResult<T> {
     private boolean success;
