@@ -1,8 +1,11 @@
 package org.seckill.service.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections4.MapUtils;
 import org.seckill.dao.SeckillDao;
 import org.seckill.dao.SuccessKilledDao;
 import org.seckill.dao.cache.RedisDao;
@@ -117,6 +120,31 @@ public class SeckillServiceImpl implements SeckillService {
         String base = "~~" + seckillId + "~~" + salt;
         String md5 = DigestUtils.md5DigestAsHex(base.getBytes());
         return md5;
+    }
+
+    @Override
+    public SeckillExecution executeSeckillProcedure(long seckillId, long userPhone, String md5) { // TODO Auto-generated method stub
+        if (md5 == null || !md5.equals(getMd5(seckillId))) {
+            return new SeckillExecution(seckillId, SeckillStateEnum.DATA_TAMPERED);
+        }
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("seckillId", seckillId);
+        paramMap.put("phone", userPhone);
+        paramMap.put("killTime", new Date());
+        paramMap.put("result", null);
+        try {
+            seckillDao.killByProcedure(paramMap);
+            int result = MapUtils.getInteger(paramMap, "result", -2);
+            if (result == 1) {
+                SuccessKilled sk = successKilledDao.queryByIdWithSeckill(seckillId, userPhone);
+                return new SeckillExecution(seckillId, SeckillStateEnum.SUCCESS, sk);
+            } else {
+                return new SeckillExecution(seckillId, SeckillStateEnum.stateOf(result));
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return new SeckillExecution(seckillId, SeckillStateEnum.INNER_ERROR);
+        }
     }
 
 }
